@@ -1,0 +1,52 @@
+<div th:replace="shared/header"></div>
+<div th:replace="shared/components/index-table-block"></div>
+<div th:replace="program/semester/subject/form-dialog"></div>
+<!-- /.modal -->
+<div th:replace="shared/footer"></div>
+
+<script>
+    $(function() {
+        loadTable($uri);
+        $('.add-btn').on('click', function() {
+            let $dialog = $('#form-dialog');
+            $dialog.find('.modal-title').html('Add ' + $pageTitle);
+            $('#form-dialog input[name=id]').val(0);
+            $('#form-dialog input[name]').val('');
+            $dialog.modal();
+        });
+
+        $('#table-block').on('click', '.edit-btn', function() {
+            let $id = $(this).attr('rel');
+            $.getJSON('/' + $uri + '/json/' + $id, function(data) {
+                let $dialog = $('#form-dialog');
+                $dialog.find('.modal-title').html('Edit ' + $pageTitle);
+                $('#form-dialog input[name=id]').val(data.id);
+                $('#form-dialog input[name=name]').val(data.name);
+                $dialog.modal();
+            });
+        });
+        loadComboBox({
+            uri: '/semester/json',
+            title: 'Select Semester',
+            el: '#form-semester-id',
+            keyname: 'id',
+            valuename: 'name'
+        });
+        loadComboBox({
+            uri: '/subject/json',
+            title: 'Select Subject',
+            el: '#form-subject-id',
+            keyname: 'id',
+            valuename: 'name'
+        });
+
+        loadComboBox({
+            uri: '/program/json',
+            title: 'Select Program',
+            el: '#form-program-id',
+            keyname: 'id',
+            valuename: 'name'
+        });
+
+    });
+</script>

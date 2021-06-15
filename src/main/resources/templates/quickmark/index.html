@@ -1,0 +1,338 @@
+<div th:replace="shared/header"></div>
+<div th:replace="quickmark/marksheet"></div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="box">
+            <div class="box-header with-border">
+                <button style="margin-top:24px" type="button" class="btn btn-primary excelUpload">Upload Excel FIle&nbsp;<span class="fa fa-file-excel-o"></span></button>
+                <button style="margin-top:24px" type="button" class="btn btn-success selectAll">Select All&nbsp;<span class="fa  fa-check-square-o"></span></button>
+                <button style="margin-top:24px" type="button" class="btn btn-success print-selected">Print Selected&nbsp;<span class="fa fa-print"></span></button>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+                <div id="table-block"></div>
+            </div>
+            <!-- /.box-body -->
+        </div>
+    </div>
+</div>
+<div th:replace="quickmark/form-dialog"></div>
+<div id="form-modal" class="modal fade">
+    <div class="modal-dialog modal-lg" style="width: 80%;">
+        <div class="modal-content">
+            <div class=" modal-header">
+                <button type="button" class="close " data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true ">&times;</span></button>
+                <h4 class="modal-title ">Edit :: QuickMark</h4>
+            </div>
+            <form method="post" id="quickmark-form">
+                <div class="modal-body ">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group ">
+                                <label>Student Name</label>
+                                <input type="text" name="studentName" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group ">
+                                <label>Matrix Number</label>
+                                <input type="text" name="matricNo" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group ">
+                                <label>Semester</label>
+                                <input type="text" name="semester" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group ">
+                                <label>Program</label>
+                                <input type="text" name="program" class="form-control" required>
+                            </div>
+                        </div>
+                    </div>
+                    <table class="table table-condensed table-striped">
+                        <thead>
+                            <tr>
+                                <th>Subject Code</th>
+                                <th>Subject</th>
+                                <th>Credit Hour</th>
+                                <th>Mark</th>
+                                <th>Total Mark</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><input type="text" name="subject1Code" class="form-control" required></td>
+                                <td><input type="text" name="subject1Name" class="form-control" required></td>
+                                <td><input type="text" name="subject1CreditHour" class="form-control" required></td>
+                                <td><input type="text" name="subject1Mark" class="form-control" required></td>
+                                <td><input type="text" name="subject1FullMark" class="form-control" required></td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" name="subject2Code" class="form-control" required></td>
+                                <td><input type="text" name="subject2Name" class="form-control" required></td>
+                                <td><input type="text" name="subject2CreditHour" class="form-control" required></td>
+                                <td><input type="text" name="subject2Mark" class="form-control" required></td>
+                                <td><input type="text" name="subject2FullMark" class="form-control" required></td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" name="subject3Code" class="form-control" required></td>
+                                <td><input type="text" name="subject3Name" class="form-control" required></td>
+                                <td><input type="text" name="subject3CreditHour" class="form-control" required></td>
+                                <td><input type="text" name="subject3Mark" class="form-control" required></td>
+                                <td><input type="text" name="subject3FullMark" class="form-control" required></td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" name="subject4Code" class="form-control" required></td>
+                                <td><input type="text" name="subject4Name" class="form-control" required></td>
+                                <td><input type="text" name="subject4CreditHour" class="form-control" required></td>
+                                <td><input type="text" name="subject4Mark" class="form-control" required></td>
+                                <td><input type="text" name="subject4FullMark" class="form-control" required></td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" name="subject5Code" class="form-control" required></td>
+                                <td><input type="text" name="subject5Name" class="form-control" required></td>
+                                <td><input type="text" name="subject5CreditHour" class="form-control" required></td>
+                                <td><input type="text" name="subject5Mark" class="form-control" required></td>
+                                <td><input type="text" name="subject5FullMark" class="form-control" required></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div>
+                    </div>
+                    <div class=" modal-footer ">
+                        <input type="hidden" name="id" value="0" />
+                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                        <button type="submit" class="btn btn-success">Save</button>
+                        <button type=" button " class=" btn btn-default" data-dismiss=" modal ">Close</button>
+                    </div>
+            </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- /.modal -->
+    <div id="markModal" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title"></h4>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-condensed table-striped" id="mark-table">
+                        <thead>
+                            <tr>
+                                <th>Subject Code</th>
+                                <th>Subject</th>
+                                <th>Credit Hour</th>
+                                <th>Point</th>
+                                <th>Grade Point</th>
+                            </tr>
+                        </thead>
+                        <tbody class="table-body">
+                            <tr class="table-row">
+
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="print-document ">
+    </div>
+    <div th:replace="shared/footer"></div>
+    <script src="/js/bict.js"></script>
+
+    <script th:inline="javascript">
+        $(function() {
+            loadTable($uri);
+            saveForm($uri, 'form-modal', 'quickmark-form');
+
+            checked = false;
+            $(document).on('click', '.selectAll', function() {
+                if (checked) {
+                    $('.check').prop('checked', false);
+                    checked = false;
+                } else {
+                    $('.check').prop('checked', true);
+                    checked = true;
+                }
+            });
+
+            $(document).on('click', '.excelUpload', function() {
+                var $dialog = $('#excelModal');
+                $dialog.modal('show');
+            });
+
+            $(document).on('click', '.print', function() {
+                $('.print-document').printThis({
+                    loadCSS: "/print.css",
+                    beforePrint: console.log('test'),
+                });
+            });
+
+            $(document).on('click', '.print-selected', function() {
+                counter = 0;
+                var $dialog = $('#marksheet-dialog');
+                $('.print-sheet').remove();
+                $(':checkbox').each(function() {
+                    $document = $('.print-document');
+                    if ($(this).prop('checked')) {
+                        totalGpa = 0;
+                        createMarkSheet($(this).attr('rel'));
+                    }
+                });
+                $dialog.find('.modal-body').html($document);
+                $('#marksheet-dialog').modal();
+            });
+
+            $(document).on('click', '.marksheet-btn', function() {
+                $id = $(this).attr('rel');
+                var $dialog = $('#marksheet-dialog');
+                $document = $('.print-document');
+                $document.html('');
+                createMarkSheet($id);
+                $dialog.find('.modal-body').html($document);
+                $dialog.modal('show');
+            });
+
+            function createMarkSheet($id) {
+                $.getJSON('/' + $uri + '/json/' + $id, function(data) {
+                    totalGpa = 0;
+                    $content = $('#marksheet-template').html();
+                    $content = $content.replace('{{ semester }}', data.semester);
+                    $content = $content.replace('{{matric-id}}', data.matricNo);
+                    $content = $content.replace('{{student-name}}', data.studentName);
+                    $content = $content.replace('{{program}}', data.program);
+                    $tbody = $('<div/>');
+                    var creditHour = 0;
+                    $tr = $('<tr/>');
+                    $('<td/>').html(data.subject1Code).appendTo($tr);
+                    $('<td/>').html(data.subject1Name).appendTo($tr);
+                    $('<td/>').html(data.subject1CreditHour).appendTo($tr);
+                    gpa = getgpa(data.subject1Mark, data.subject1FullMark);
+                    console.log(gpa);
+                    totalGpa += getPoint(gpa, data.subject1CreditHour);
+                    $('<td/>').html(getGrade(gpa)).appendTo($tr);
+                    $('<td/>').html(gpa).appendTo($tr);
+                    $('<td/>').html(getPoint(gpa, data.subject1CreditHour).toFixed(2)).appendTo($tr);
+                    $tbody.append($tr);
+                    $tr = $('<tr/>');
+                    $('<td/>').html(data.subject2Code).appendTo($tr);
+                    $('<td/>').html(data.subject2Name).appendTo($tr);
+                    $('<td/>').html(data.subject2CreditHour).appendTo($tr);
+                    gpa = getgpa(data.subject2Mark, data.subject2FullMark);
+                    totalGpa += getPoint(gpa, data.subject2CreditHour);
+                    $('<td/>').html(getGrade(gpa)).appendTo($tr);
+                    $('<td/>').html(gpa).appendTo($tr);
+                    $('<td/>').html(getPoint(gpa, data.subject2CreditHour).toFixed(2)).appendTo($tr);
+                    $tbody.append($tr);
+                    $tr = $('<tr/>');
+                    $('<td/>').html(data.subject3Code).appendTo($tr);
+                    $('<td/>').html(data.subject3Name).appendTo($tr);
+                    $('<td/>').html(data.subject3CreditHour).appendTo($tr);
+                    gpa = getgpa(data.subject3Mark, data.subject3FullMark);
+                    totalGpa += getPoint(gpa, data.subject3CreditHour);
+                    $('<td/>').html(getGrade(gpa)).appendTo($tr);
+                    $('<td/>').html(gpa).appendTo($tr);
+                    $('<td/>').html(getPoint(gpa, data.subject3CreditHour).toFixed(2)).appendTo($tr);
+                    $tbody.append($tr);
+                    $tr = $('<tr/>');
+                    $('<td/>').html(data.subject4Code).appendTo($tr);
+                    $('<td/>').html(data.subject4Name).appendTo($tr);
+                    $('<td/>').html(data.subject4CreditHour).appendTo($tr);
+                    gpa = getgpa(data.subject4Mark, data.subject4FullMark);
+                    totalGpa += getPoint(gpa, data.subject4CreditHour);
+                    $('<td/>').html(getGrade(gpa)).appendTo($tr);
+                    $('<td/>').html(gpa).appendTo($tr);
+                    $('<td/>').html(getPoint(gpa, data.subject4CreditHour).toFixed(2)).appendTo($tr);
+                    $tbody.append($tr);
+                    $tr = $('<tr/>');
+                    $('<td/>').html(data.subject5Code).appendTo($tr);
+                    $('<td/>').html(data.subject5Name).appendTo($tr);
+                    $('<td/>').html(data.subject5CreditHour).appendTo($tr);
+                    gpa = getgpa(data.subject5Mark, data.subject5FullMark);
+                    totalGpa += getPoint(gpa, data.subject5CreditHour);
+                    $('<td/>').html(getGrade(gpa)).appendTo($tr);
+                    $('<td/>').html(gpa).appendTo($tr);
+                    $('<td/>').html(getPoint(gpa, data.subject5CreditHour).toFixed(2)).appendTo($tr);
+                    $tbody.append($tr);
+                    creditHour = data.subject1CreditHour + data.subject2CreditHour + data.subject3CreditHour + data.subject4CreditHour + data.subject5CreditHour;
+                    $content = $content.replace('{{credit-hour}}', creditHour);
+                    var today = new Date();
+                    var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+                    $content = $content.replace('{{date}}', date);
+                    $content = $content.replace('{{gpa}}', (getGPA(totalGpa, creditHour)).toFixed(2));
+                    if (data.subject1Mark < (data.subject1FullMark * 0.34) || data.subject2Mark < (data.subject2FullMark * 0.34) || data.subject3Mark < (data.subject3FullMark * 0.34) || data.subject4Mark < (data.subject4FullMark * 0.34) || data.subject5Mark < (data.subject5FullMark * 0.34)) {
+                        $content = $content.replace('{{standing}}', getStanding(0));
+                    } else {
+                        $content = $content.replace('{{standing}}', getStanding(getGPA(totalGpa, creditHour)));
+                    }
+                    $('<div class="print-sheet" style="height:800px;position:relative;"/>').html($content).appendTo($('.print-document'));
+                    $('.t-body').append($tbody.html()).removeClass('t-body');
+
+                });
+            }
+
+            $(document).on('click', '.excelUpload', function() {
+                var $dialog = $('#excelModal');
+                $dialog.modal('show');
+            });
+            $(document).on('click', '.edit-btn', function() {
+                $dialog = $('#form-modal');
+                $id = $(this).attr('rel');
+                $.getJSON('/' + $uri + '/json/' + $id, function(data) {
+                    $('#quickmark-form input[name=id]').val($id);
+                    $('#quickmark-form input[name=subject1Code]').val(data.subject1Code);
+                    $('#quickmark-form input[name=subject1CreditHour]').val(data.subject1CreditHour);
+                    $('#quickmark-form input[name=subject1Name]').val(data.subject1Name);
+                    $('#quickmark-form input[name=subject1Mark]').val(data.subject1Mark);
+                    $('#quickmark-form input[name=subject1FullMark]').val(data.subject1FullMark);
+                    $('#quickmark-form input[name=subject2Code]').val(data.subject2Code);
+                    $('#quickmark-form input[name=subject2CreditHour]').val(data.subject2CreditHour);
+                    $('#quickmark-form input[name=subject2Name]').val(data.subject2Name);
+                    $('#quickmark-form input[name=subject2Mark]').val(data.subject2Mark);
+                    $('#quickmark-form input[name=subject2FullMark]').val(data.subject2FullMark);
+                    $('#quickmark-form input[name=subject3Code]').val(data.subject3Code);
+                    $('#quickmark-form input[name=subject3CreditHour]').val(data.subject3CreditHour);
+                    $('#quickmark-form input[name=subject3Name]').val(data.subject3Name);
+                    $('#quickmark-form input[name=subject3Mark]').val(data.subject3Mark);
+                    $('#quickmark-form input[name=subject3FullMark]').val(data.subject3FullMark);
+                    $('#quickmark-form input[name=subject4Code]').val(data.subject4Code);
+                    $('#quickmark-form input[name=subject4CreditHour]').val(data.subject4CreditHour);
+                    $('#quickmark-form input[name=subject4Name]').val(data.subject4Name);
+                    $('#quickmark-form input[name=subject4Mark]').val(data.subject4Mark);
+                    $('#quickmark-form input[name=subject4FullMark]').val(data.subject4FullMark);
+                    $('#quickmark-form input[name=subject5Code]').val(data.subject5Code);
+                    $('#quickmark-form input[name=subject5CreditHour]').val(data.subject5CreditHour);
+                    $('#quickmark-form input[name=subject5Name]').val(data.subject5Name);
+                    $('#quickmark-form input[name=subject5Mark]').val(data.subject5Mark);
+                    $('#quickmark-form input[name=subject5FullMark]').val(data.subject5FullMark);
+                    $('#quickmark-form input[name=studentName]').val(data.studentName);
+                    $('#quickmark-form input[name=matricNo]').val(data.matricNo);
+                    $('#quickmark-form input[name=program]').val(data.program);
+                    $('#quickmark-form input[name=semester]').val(data.semester);
+                });
+                $dialog.modal();
+            });
+
+        });
+    </script>

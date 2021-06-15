@@ -1,0 +1,32 @@
+<div th:replace="shared/header"></div>
+
+<div class="col-md-6">
+          <!-- general form elements -->
+          <div class="box box-primary">
+            <div class="box-header with-border">
+              <h3 class="box-title">Generators</h3>
+            </div>
+            <!-- /.box-header -->
+            <!-- form start -->
+            <form role="form" method="post" th:action="${pageURI}">
+              <div class="box-body">
+                <div class="form-group">
+                  <label>Entity</label>
+                  <select name="entity" class="form-control">
+                      <option th:each="f:${files}" th:value="${f}" th:text="${f}"></option>
+                      
+                  </select>
+                  
+                </div>
+                
+                
+              </div>
+              <!-- /.box-body -->
+
+              <div class="box-footer">
+               
+                <button type="submit" class="btn btn-primary">Generate</button>
+              </div>
+            </form>
+          </div>
+<div th:replace="shared/footer"></div>

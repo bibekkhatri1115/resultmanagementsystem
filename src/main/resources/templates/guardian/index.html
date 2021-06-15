@@ -1,0 +1,38 @@
+<div th:replace="shared/header"></div>
+<div th:replace="shared/components/index-table-block"></div>
+
+<div th:replace="guardian/form-dialog"></div>
+<!-- /.modal -->
+<div th:replace="shared/footer"></div>
+
+<script th:inline="javascript">
+    $(function() {
+        loadTable($uri);
+        saveForm($uri, 'form-dialog', 'dialog-form');
+        $('.add-btn').on('click', function() {
+            let $dialog = $('#form-dialog');
+            $dialog.find('.modal-title').html('Add ' + $pageTitle);
+            $('#form-dialog input').val('');
+            $('#form-dialog input[name=id]').val(0);
+            $('#form-dialog input[name=_csrf]').val($csrf);
+            $('#form-dialog input[name=status]').val('1');
+            $dialog.modal();
+        });
+
+        $('#table-block').on('click', '.edit-btn', function() {
+            let $id = $(this).attr('rel');
+            let $dialog = $('#form-dialog');
+            $dialog.find('.modal-title').html('Edit ' + $pageTitle);
+            $.getJSON('/' + $uri + '/json/' + $id, function(data) {
+                $('#form-dialog input[name=id]').val(data.id);
+                $('#form-dialog input[name=firstName]').val(data.firstName);
+                $('#form-dialog input[name=lastName]').val(data.lastName);
+                $('#form-dialog input[name=email]').val(data.email);
+                $('#form-dialog input[name=phone]').val(data.phone);
+                $('#form-dialog input[name=address]').val(data.address);
+                $dialog.modal();
+            });
+        });
+
+    });
+</script>

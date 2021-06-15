@@ -1,0 +1,66 @@
+<div th:replace="shared/header"></div>
+<div class="row">
+        <div class="col-md-6">
+          <div class="box">
+            <div class="box-header with-border">
+              <h3 class="box-title"></h3>
+              <a href="item/create" class="btn btn-sm btn-primary">
+                  <span class="glyphicon glyphicon-plus"></span>
+              </a>
+              
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+              <table class="table table-bordered">
+                <tr>
+                  <th style="width: 10px">id</th>
+                  <th>Name</th>
+                  <th>CatagoryList</th>
+                  
+                  
+                 
+                 
+                </tr>
+                <tr th:each="record:${records}">
+                    <td th:text="${record.id}"></td>
+                    <td th:text="${record.name}"></td>
+                    <td>
+                        <span th:each="c:${record.itemCategoryList}" th:text="${c.categoryId.name}"></span>
+                    </td>
+                    <td><a href="#" class="btn btn-info btn-lg">
+          <span class="glyphicon glyphicon-pencil"></span> Edit 
+                        </a></td>
+                        <td>
+                        <form th:action="@{delete}" method="post" th:object="${record}">
+                               <input type="hidden" name="id" th:value="${record}" />
+                  <input type="submit" value="Delete" class="btn btn-danger" />
+                        </form></td>
+                    
+                    
+     
+                    
+                    
+                    
+                    
+                </tr>
+               
+              </table>
+            </div>
+            <!-- /.box-body -->
+            <div class="box-footer clearfix">
+              <ul class="pagination pagination-sm no-margin pull-right">
+                <li><a href="#">&laquo;</a></li>
+                <li><a href="#">1</a></li>
+                <li><a href="#">2</a></li>
+                <li><a href="#">3</a></li>
+                <li><a href="#">&raquo;</a></li>
+              </ul>
+            </div>
+          </div>
+          <!-- /.box -->
+
+          
+        <!-- /.col -->
+        
+        </div>
+<div th:replace="shared/footer"></div>

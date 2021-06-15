@@ -1,0 +1,71 @@
+#Web_1920___1 {
+    left: -500px;
+    height: 990px;
+}
+
+#Mark_Sheet {
+    top: 205px;
+    margin-left: -90px;
+    font-size: 28px;
+}
+
+.print-sheet {
+    height: 8000px;
+    position: absolute;
+    margin-left: 500px;
+    margin-top: 300px;
+    font-size: 500px;
+}
+
+.print-sheet:first-child {
+    margin-top: 0px;
+}
+
+.Rectangle_1 {
+    height: 995px;
+}
+
+#Rectangle_1 {
+    height: 980px;
+}
+
+.Path_1 {
+    top: 266px;
+}
+
+.Line_7 {
+    top: 816.16px;
+}
+
+#Matric_Id___Student_Name___Pro {
+    top: 279px;
+}
+
+#Semsester__ {
+    top: 279px;
+}
+
+.mark-table {
+    top: 450px;
+}
+
+#Date_ {
+    top: 660px;
+}
+
+#Credit_Hours___GPA___Academic_ {
+    top: 660px;
+}
+
+#Authorized_Signature {
+    top: 796px;
+}
+
+.AeU_New_Logo {
+    top: 207px;
+}
+
+.Logo {
+    top: 10px;
+    left: 207px;
+}

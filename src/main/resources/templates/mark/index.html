@@ -1,0 +1,253 @@
+<div th:replace="shared/header"></div>
+<div th:replace="shared/components/load-dialog"></div>
+<div th:replace="mark/marksheet"></div>
+<div th:replace="mark/excel"></div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="box">
+            <div class="box-header with-border">
+                <a th:href="@{'/'+${pageURI}+'/create'}" class="btn btn-primary btn-xs add-btn">
+                    <span class="glyphicon glyphicon-plus"></span>
+                </a>
+                <div class="row">
+                    <div class="form-group col-xs-3">
+                        <label>Program:</label>
+                        <select id="form-program-id" name="program.id" class="form-control program-id"></select>
+                    </div>
+                    <div class="form-group col-xs-3">
+                        <label>Semester:</label>
+                        <select id="form-semester-id" name="semester.id" class="form-control semester"></select>
+                    </div>
+                    <button style="margin-top:24px" type="button" class="btn btn-primary excelUpload">Upload Excel FIle&nbsp;<span class="fa fa-file-excel-o"></span></button>
+                </div>
+                <table class="list-table table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Matrix No</th>
+                            <th>Student</th>
+                            <th>Program</th>
+                            <th>Semester</th>
+                            <th>Total</th>
+                            <th>GPA</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody class="mark-body">
+                        <tr th:each="record:${records}">
+                            <td th:text="${record.id}"></td>
+                            <td th:text="${record.student.matrixNo}"></td>
+                            <td th:text="${record.student.firstName +' '+record.student.lastName}"></td>
+                            <td th:text="${record.student.program.name}"></td>
+                            <td th:text="${record.student.semester.name}"></td>
+                            <td th:text="${record.total}"></td>
+                            <td><span th:text="${record.gpa}"></span>
+                                <a style="float:right;" href="javascript:void(0)" th:rel="${record.id}" class="btn btn-primary btn-sm view-btn"><span  class="glyphicon glyphicon-eye-open"></span></a>
+                            </td>
+                            <td>
+                                <a href="javascript:void(0)" th:rel="${record.id}" class="btn btn-success btn-xs edit-btn">
+                                    <span class="glyphicon glyphicon-pencil"></span>
+                                </a>
+                                <a href="javascript:void(0)" th:rel="${record.id}" class="btn btn-danger btn-xs delete-btn">
+                                    <span class="glyphicon glyphicon-trash"></span>
+                                </a>
+                                <a href="javascript:void(0)" th:rel="${record.id}" class="btn btn-success btn-xs marksheet-btn">
+                                    <span class="fa fa-print"></span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- /.modal -->
+<div id="markModal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"></h4>
+            </div>
+            <div class="modal-body">
+                <table class="table table-condensed table-striped" id="mark-table">
+                    <thead>
+                        <tr>
+                            <th>Subject Code</th>
+                            <th>Subject</th>
+                            <th>Credit Hour</th>
+                            <th>Point</th>
+                            <th>Grade Point</th>
+                        </tr>
+                    </thead>
+                    <tbody class="table-body">
+                        <tr class="table-row">
+
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:replace="shared/footer"></div>
+<script>
+    $(function() {
+        createDataTable('.list-table');
+        loadComboBox({
+            uri: '/program/json',
+            title: 'Select Program',
+            el: '#form-program-id',
+            keyname: 'id',
+            valuename: 'name'
+        });
+        $('.add-btn').on('click', function() {
+            let $dialog = $('#form-dialog');
+            $dialog.find('.modal-title').html('Add ' + $pageTitle);
+            $('#form-dialog input[name=id]').val(0);
+            $('#form-dialog input[name=name]').val('');
+            $dialog.modal();
+        });
+
+        $(document).on('change', '.program-id', function() {
+            id = $(this).val();
+            $el = $('#form-semester-id');
+            $el.find("option").remove();
+            $el.append('<option value="">' + 'Select Semester' + "</option>");
+            $.getJSON('/program/semester/details/' + id, function(data) {
+                temp = 0;
+                $.each(data, function(i, elem) {
+                    if (temp != elem.semester.id) {
+                        var $option = $("<option/>");
+                        $option
+                            .val(elem.semester['id'])
+                            .text(elem.semester['name'])
+                            .appendTo($el);
+                    }
+                    temp = elem.semester.id;
+                });
+            });
+
+        });
+        $(document).on('change', '.semester', function() {
+            $('#flash-message').fadeIn('slow').appendTo("body");
+            let $programId = $('.program-id').val();
+            let $semesterId = $('.semester').val();
+            console.log($programId);
+            console.log($semesterId);
+            $.getJSON('/' + $uri + '/json', function(data) {
+                $('.mark-body tr').remove();
+                $.each(data, function(i, elem) {
+                    if (elem.student.program.id == $programId && elem.student.semester.id == $semesterId) {
+                        var matrixNo = elem.student.matrixNo;
+                        var name = elem.student.firstName + ' ' + elem.student.lastName;
+                        var programId = elem.student.program.id;
+                        var program = elem.student.program.name;
+                        var semesterId = elem.student.semester.id;
+                        var semester = elem.student.semester.name;
+                        var total = elem.total;
+                        var gpa = elem.gpa;
+                        $tr = $('<tr/>');
+                        $('<td/>').html(elem.id).appendTo($tr);
+                        $('<td/>').html(matrixNo).appendTo($tr);
+                        $('<td/>').html(name).appendTo($tr);
+                        $('<td/>').html(program).appendTo($tr);
+                        $('<td/>').html(semester).appendTo($tr);
+                        $('<td/>').html(total).appendTo($tr);
+                        $('<td/>').html(gpa).appendTo($tr);
+                        $('<td/>').html('<a href="javascript:void(0)" rel="' + elem.id + '" class="btn btn-success btn-xs edit-btn"><span class="glyphicon glyphicon-pencil"></span></a>' +
+                            '<a href="javascript:void(0)" rel="' + elem.id + '" class="btn btn-danger btn-xs delete-btn"><span class="glyphicon glyphicon-trash"></span></a>' +
+                            '<a href="javascript:void(0)" rel="' + elem.id + '" class="btn btn-success btn-xs marksheet-btn"><span class="fa fa-print"></span>').appendTo($tr);
+                        $('.mark-body').append($tr);
+                    }
+                });
+            });
+            $('#flash-message').fadeOut('slow');
+        });
+
+        $(document).on('click', '.edit-btn', function() {
+            let $id = $(this).attr('rel');
+            $.getJSON('/' + $uri + '/json/' + $id, function(data) {
+                let $dialog = $('#form-dialog');
+                $dialog.find('.modal-title').html('Edit ' + $pageTitle);
+                $('#form-dialog input[name=id]').val(data.id);
+                $('#form-dialog input[name=name]').val(data.name);
+                $dialog.modal();
+            });
+        });
+
+        $(document).on('click', '.view-btn', function() {
+            $id = $(this).attr('rel');
+            $.getJSON($uri + '/details/' + $id, function(data) {
+                $tbody = $('.table-body');
+                $('.table-body tr').remove();
+                $.each(data, function(i, elem) {
+                    $tr = $('<tr/>');
+                    $('<td/>').html(elem.subject.subjectCode).appendTo($tr);
+                    $('<td/>').html(elem.subject.name).appendTo($tr);
+                    $('<td/>').html(elem.subject.creditHour).appendTo($tr);
+                    $('<td/>').html(elem.mark).appendTo($tr);
+                    $('<td/>').html(elem.gradePoint).appendTo($tr);
+                    $('.table-body').append($tr);
+                });
+            });
+            var $dialog = $('#markModal');
+            $dialog.modal('show');
+        });
+
+        $(document).on('click', '.print', function() {
+            jQuery.print($('#Web_1920___1'));
+        });
+
+        $(document).on('click', '.marksheet-btn', function() {
+            $id = $(this).attr('rel');
+            var $dialog = $('#marksheet-dialog');
+            $.getJSON($uri + '/details/' + $id, function(data) {
+                $('.sem').html(data[0].studentMark.student.semester.name);
+                $('.std-name').html(data[0].studentMark.student.firstName + ' ' + data[0].studentMark.student.lastName);
+                $('.matric-id').html(data[0].studentMark.student.matrixNo);
+                $('.program').html(data[0].studentMark.student.program.name);
+
+
+                $tbody = $('.t-body');
+                $('.t-body tr').remove();
+                var creditHour = 0;
+                $.each(data, function(i, elem) {
+                    $tr = $('<tr/>');
+                    $('<td/>').html(elem.subject.subjectCode).appendTo($tr);
+                    $('<td/>').html(elem.subject.name).appendTo($tr);
+                    $('<td/>').html(elem.subject.creditHour).appendTo($tr);
+                    $('<td/>').html(elem.mark).appendTo($tr);
+                    $('<td/>').html(elem.gradePoint).appendTo($tr);
+                    $('<td/>').html(elem.gradePoint).appendTo($tr);
+                    $('.t-body').append($tr);
+                    creditHour += elem.subject.creditHour;
+                });
+                $('.total-credit').html(creditHour);
+
+            });
+            $dialog.modal('show');
+        });
+        $(document).on('click', '.excelUpload', function() {
+            var $dialog = $('#excelModal');
+            $dialog.modal('show');
+        });
+
+    });
+</script>

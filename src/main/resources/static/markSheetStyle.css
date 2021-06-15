@@ -1,0 +1,207 @@
+.mediaViewInfo {
+    --web-view-name: Web 1920 – 1;
+    --web-view-id: Web_1920___1;
+    --web-scale-on-resize: true;
+    --web-enable-deep-linking: true;
+}
+
+:root {
+    --web-view-ids: Web_1920___1;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    border: none;
+}
+
+#Web_1920___1 {
+    /* margin-left: -15px; */
+    position: absolute;
+    background: #E5E5E5;
+    width: 700px;
+    height: 756px;
+    background-color: rgba(255, 255, 255, 1);
+    overflow: hidden;
+    --web-view-name: Web 1920 – 1;
+    --web-view-id: Web_1920___1;
+    --web-scale-on-resize: true;
+    --web-enable-deep-linking: true;
+}
+
+.Logo {
+    position: absolute;
+    overflow: visible;
+    width: 330px;
+    height: 259px;
+    left: 193px;
+    top: -40px;
+}
+
+#Mark_Sheet {
+    position: absolute;
+    left: 278px;
+    top: 155px;
+    overflow: visible;
+    width: 200px;
+    white-space: nowrap;
+    text-align: left;
+    font-family: Arial Rounded MT;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 18px;
+    color: rgba(0, 0, 0, 1);
+}
+
+#Semsester__ {
+    position: absolute;
+    left: 454px;
+    top: 199px;
+    overflow: hidden;
+    width: 243px;
+    height: 41px;
+    text-align: left;
+    font-family: Segoe UI;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 16px;
+    color: rgba(0, 0, 0, 1);
+}
+
+#Matric_Id___Student_Name___Pro {
+    position: absolute;
+    left: 76px;
+    top: 199px;
+    overflow: hidden;
+    width: 414px;
+    height: 138px;
+    text-align: left;
+    font-family: Segoe UI;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 16px;
+    color: rgba(0, 0, 0, 1);
+}
+
+.Path_1 {
+    overflow: visible;
+    position: absolute;
+    width: 618.273px;
+    height: 140.935px;
+    left: 42.818px;
+    top: 186px;
+    transform: matrix(1, 0, 0, 1, 0, 0);
+}
+
+.Line_7 {
+    overflow: visible;
+    position: absolute;
+    width: 149.522px;
+    height: 1.34px;
+    left: 513.98px;
+    top: 695.16px;
+    transform: matrix(1, 0, 0, 1, 0, 0);
+}
+
+#Date_ {
+    position: absolute;
+    left: 78px;
+    top: 540px;
+    overflow: hidden;
+    width: 265px;
+    height: 59px;
+    text-align: left;
+    font-family: Segoe UI;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 16px;
+    color: rgba(0, 0, 0, 1);
+}
+
+#Credit_Hours___GPA___Academic_ {
+    position: absolute;
+    left: 316px;
+    top: 540px;
+    overflow: hidden;
+    width: 311px;
+    height: 126px;
+    text-align: left;
+    font-family: Segoe UI;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 16px;
+    color: rgba(0, 0, 0, 1);
+}
+
+#Authorized_Signature {
+    position: absolute;
+    left: 316px;
+    top: 675px;
+    overflow: hidden;
+    width: 231px;
+    height: 59px;
+    text-align: left;
+    font-family: Segoe UI;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 16px;
+    color: rgba(0, 0, 0, 1);
+}
+
+#AeU_New_Logo {
+    opacity: 0.8;
+}
+
+.AeU_New_Logo {
+    position: absolute;
+    overflow: visible;
+    width: 998px;
+    height: 548px;
+    left: -136px;
+    top: 117px;
+}
+
+.Rectangle_1 {
+    position: absolute;
+    overflow: visible;
+    width: 700px;
+    height: 730px;
+    left: 12px;
+    top: 10px;
+}
+
+#Rectangle_1 {
+    height: 730px;
+}
+
+.mark-table {
+    position: absolute;
+    top: 350px;
+    width: 88.3%;
+    left: 6.2%;
+    font-family: Segoe UI;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 16px;
+    /* text-align: center; */
+}
+
+.mark-table {
+    border-collapse: collapse;
+}
+
+.mark-table th {
+    text-align: center;
+    border: 2px solid black;
+}
+
+.mark-table td {
+    text-align: center;
+    border: 2px solid black;
+}
+
+.table-body td {
+    font-size: 14px;
+    font-weight: normal;
+}

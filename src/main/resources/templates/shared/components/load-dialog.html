@@ -1,0 +1,25 @@
+<!-- Please wait Modal -->
+<style>
+    .alertbox {
+        display: none;
+        position: absolute;
+        top: 0;
+        z-index: 6;
+        left: 0;
+        background: #33333330;
+        width: 100%;
+        height: 100%;
+    }
+    
+    .alertholder {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+</style>
+<div role="alert" id="flash-message" class="alertbox">
+    <div class="alertholder alert alert-success" style="width:15%">
+        <img src="/image/processing.gif" style="margin: auto;display: inline; width:10%"> Processing, please wait ...
+    </div>
+</div>

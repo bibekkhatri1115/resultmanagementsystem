@@ -1,0 +1,79 @@
+<table class="table table-bordered" id="data-table">
+    <thead>
+        <tr>
+            <td></td>
+            <th>SN</th>
+            <th>Matrix No</th>
+            <th>Name</th>
+            <th>Program</th>
+            <th>Semester</th>
+            <th class="sub-1-head hidden"></th>
+            <th class="sub-2-head hidden"></th>
+            <th class="sub-3-head hidden"></th>
+            <th class="sub-4-head hidden"></th>
+            <th class="sub-5-head hidden"></th>
+            <th>GPA</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr th:each="record:${records}">
+            <td><input type="checkbox" class="check" th:rel="${record.id}"></td>
+            <td th:text="${recordStat.index+1}"></td>
+            <td th:text="${record.matricNo}"></td>
+            <td th:text="${record.studentName}"></td>
+            <td th:text="${record.program}"></td>
+            <td th:text="${record.semester}"></td>
+            <td th:text="${record.subject1Mark}" class="hidden"></td>
+            <td th:text="${record.subject2Mark}" class="hidden"></td>
+            <td th:text="${record.subject3Mark}" class="hidden"></td>
+            <td th:text="${record.subject4Mark}" class="hidden"></td>
+            <td th:text="${record.subject5Mark}" class="hidden"></td>
+            <td><span th:text="${record.gpa}"></span>
+            </td>
+            <td>
+                <a href="javascript:void(0)" th:rel="${record.id}" class="btn btn-success btn-xs edit-btn">
+                    <span class="glyphicon glyphicon-pencil"></span>
+                </a>
+                <a href="javascript:void(0)" th:rel="${record.id}" class="btn btn-danger btn-xs delete-btn">
+                    <span class="glyphicon glyphicon-trash"></span>
+                </a>
+                <a href="javascript:void(0)" th:rel="${record.id}" class="btn btn-success btn-xs marksheet-btn"><span
+                        class="fa fa-print"></span>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<script>
+    $(function () {
+        var table = $('#data-table').DataTable({
+            responsive: true,
+            buttons: [
+            { extend: 'copy', className: 'btn-copy', },
+            { extend: 'excel', className: 'btn-csv' },
+            { extend: 'print', className: 'btn-print' },
+            ],
+            "order": [1,     'asc'],
+            "columnDefs": [{
+                "targets": 0,
+                "searchable": false,
+                "orderable": false
+            }]
+        });
+        table.buttons().container()
+    .appendTo( $('.col-sm-6:eq(0)', table.table().container() ) );
+    $('.dt-button').removeClass("dt-button").addClass("btn btn-info btn-xs");
+    $('.dataTables_length').css("float","left").css("width","150");
+    $('.btn-copy').append('&nbsp <span class="fa fa-copy"></span>');
+    $('.btn-csv').append('&nbsp <span class="fa fa-file-excel-o"></span>');
+    $('.btn-print').append('&nbsp <span class="fa fa-print"></span>');
+        $.getJSON('/mark/quick/json',function(data){
+            $('.sub-1-head').html(data[0].subject1Name);
+            $('.sub-2-head').html(data[0].subject2Name);
+            $('.sub-3-head').html(data[0].subject3Name);
+            $('.sub-4-head').html(data[0].subject4Name);
+            $('.sub-5-head').html(data[0].subject5Name);
+        });
+    });
+</script>

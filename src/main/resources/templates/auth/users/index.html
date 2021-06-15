@@ -1,0 +1,100 @@
+<div th:replace="shared/header"></div>
+<div th:replace="shared/components/index-table-block"></div>
+<div th:replace="auth/users/form-dialog"></div>
+<!-- /.modal -->
+<div th:replace="shared/footer"></div>
+
+<script>
+    $(function() {
+        loadTable($uri);
+
+        $('.add-btn').on('click', function() {
+            let $dialog = $('#form-dialog');
+            $dialog.find('.modal-title').html('Add ' + $pageTitle);
+            $('#form-dialog input[name=id]').val(0);
+            $('#form-dialog input[name=userName]').val('');
+            $('#form-dialog input[name=email]').val('');
+            $('#form-dialog input[name=password]').val('');
+            $('#form-dialog input[name=cpassword]').val('');
+            $('#form-dialog input[name=status]').attr('checked', false);
+            $('#form-dialog #change-password-block').hide();
+            $('#form-dialog #password').prop('required', true);
+            $('#form-dialog #confirm-password').prop('required', true);
+            $dialog.modal();
+        });
+
+        $('#table-block').on('click', '.edit-btn', function() {
+            let $id = $(this).attr('rel');
+            $.getJSON('/' + $uri + '/json/' + $id, function(data) {
+                let $dialog = $('#form-dialog');
+                $dialog.find('.modal-title').html('Edit ' + $pageTitle);
+                $('#form-dialog input[name=id]').val(data.id);
+                $('#form-dialog input[name=userName]').val(data.userName);
+                $('#form-dialog input[name=email]').val(data.email);
+                $('#form-dialog input[name=status]').attr('checked', data.status);
+                $('#form-dialog input[name=password]').val('');
+                $('#form-dialog input[name=cpassword]').val('');
+                $('#form-dialog #change-password-block').show();
+                $('#form-dialog #password').prop('required', false);
+                $('#form-dialog #confirm-password').prop('required', false);
+                $dialog.modal();
+            });
+        });
+
+
+        $('#change-password').on('change', function() {
+            $('#form-dialog #password').prop('required', $(this).is(':checked'));
+            $('#form-dialog #confirm-password').prop('required', $(this).is(':checked'));
+
+        });
+
+        $('#user-name').on('keyup', function() {
+            $username = $(this);
+            $message = $('#user-name-message');
+            $.post('/' + $uri + '/check-username', {
+                username: $username.val(),
+                _csrf: $csrf,
+                id: $('#user-id').val()
+            }, function(data) {
+                if (!data) {
+                    $message.addClass('label-success')
+                        .removeClass('label-danger')
+                        .html('User Name is available');
+                } else {
+                    $message.addClass('label-danger')
+                        .removeClass('label-success')
+                        .html('User Name is not available');
+                }
+            });
+        });
+
+        $('#email').on('keyup', function() {
+            $email = $(this);
+            $message = $('#email-message');
+            $.post('/' + $uri + '/check-email', {
+                email: $email.val(),
+                _csrf: $csrf,
+                id: $('#user-id').val()
+            }, function(data) {
+                if (!data) {
+                    $message.addClass('label-success')
+                        .removeClass('label-danger')
+                        .html('Email is available');
+                } else {
+                    $message.addClass('label-danger')
+                        .removeClass('label-success')
+                        .html('Email is not available');
+                }
+            });
+        });
+
+        loadComboBox({
+            uri: '/roles/json',
+            title: 'Select Roles',
+            el: '#form-role-id',
+            keyname: 'id',
+            valuename: 'name'
+        });
+
+    });
+</script>

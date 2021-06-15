@@ -1,0 +1,45 @@
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Matrix No</th>
+            <th>Name</th>
+            <th>Address</th>
+            <th>Email</th>
+            <th>Phone Number</th>
+            <th>Birth Date</th>
+            <th>Program</th>
+            <th>Semester</th>
+            <th>Guardian</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr th:each="record:${records}">
+            <td th:text="${record.id}"></td>
+            <td th:text="${record.matrixNo}"></td>
+            <td th:text="${record.fullName}"></td>
+            <td th:text="${record.address}"></td>
+            <td th:text="${record.email}"></td>
+            <td th:text="${record.phoneNo}"></td>
+            <td th:text="${#dates.format(record.birthDate, 'yyyy-MM-dd')}"></td>
+            <td th:text="${record.program.name}"></td>
+            <td th:text="${record.semester.name}"></td>
+            <td th:text="${record.guardian.fullName}"></td>
+            <td>
+                <a href="javascript:void(0)" th:rel="${record.id}" class="btn btn-success btn-xs edit-btn">
+                    <span class="glyphicon glyphicon-pencil"></span>
+                </a>
+                <a href="javascript:void(0)" th:rel="${record.id}" class="btn btn-danger btn-xs delete-btn">
+                    <span class="glyphicon glyphicon-trash"></span>
+                </a>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<script>
+    $(function() {
+        createDataTable('.table');
+    });
+</script>

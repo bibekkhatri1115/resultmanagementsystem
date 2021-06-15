@@ -1,0 +1,116 @@
+<div th:replace="shared/header"></div>
+<div th:replace="shared/components/index-table-block"></div>
+<div th:replace="student/form-dialog"></div>
+<div th:replace="shared/components/guardian-dialog"></div>
+
+<!-- /.modal -->
+<div th:replace="shared/footer"></div>
+
+<script th:inline="javascript">
+    $(function() {
+        loadTable($uri);
+        saveForm($uri, 'form-dialog', 'dialog-form');
+        $('.add-btn').on('click', function() {
+            let $dialog = $('#form-dialog');
+            $dialog.find('.modal-title').html('Add ' + $pageTitle);
+            $('#form-dialog input').val('');
+            $('#form-dialog select').val('').trigger('change');
+            $('#form-dialog input[name=id]').val(0);
+            $('#form-dialog input[name=_csrf]').val($csrf);
+            $('#form-dialog input[name=status]').val('1');
+            $dialog.modal();
+        });
+
+        $('#table-block').on('click', '.edit-btn', function() {
+            let $id = $(this).attr('rel');
+            let $dialog = $('#form-dialog');
+            $dialog.find('.modal-title').html('Edit ' + $pageTitle);
+            $.getJSON('/' + $uri + '/json/' + $id, function(data) {
+                $('#form-dialog input[name=id]').val(data.id);
+                $('#form-dialog input[name=firstName]').val(data.firstName);
+                $('#form-dialog input[name=lastName]').val(data.lastName);
+                $('#form-dialog input[name=address]').val(data.address);
+                $('#form-dialog input[name=email]').val(data.email);
+                $('#form-dialog input[name=phoneNo]').val(data.phoneNo);
+                $('#form-dialog input[name=matrixNo]').val(data.matrixNo);
+                $('#form-dialog input[name=birthDate]').val(moment(data.birthDate).format('YYYY-MM-DD'));
+                $('#form-semester-id').val(data.semester.id).trigger('change');
+                $('#form-guardian-id').val(data.guardian.id).trigger('change');
+                $dialog.modal();
+            });
+        });
+
+        $('.add-guardian-btn').on('click', function() {
+            var $dialog = $('#guardian-dialog');
+            $dialog.find('.modal-title').html('Add Guardian');
+            $dialog.modal();
+        });
+        $('#guardian-dialog #dialog-form').on('submit', function() {
+            $.post('/guardian/save-json', $(this).serialize(), function(data) {
+                if (data === true) {
+                    $('#guardian-dialog').modal('hide');
+                    loadComboBox({
+                        uri: '/guardian/json',
+                        title: 'Select Guardian',
+                        el: '#form-guardian-id',
+                        keyname: 'id',
+                        valuename: 'firstName'
+                    }, function() {
+                        $text = $('#guardian-dialog input[name=firstName]').val();
+                        $("#form-guardian-id option:contains(" + $text + ")").attr('selected', true);
+                    });
+
+                }
+            });
+            return false;
+        });
+
+        loadComboBox({
+            uri: '/guardian/json',
+            title: 'Select Guardian',
+            el: '#form-guardian-id',
+            keyname: 'id',
+            valuename: 'firstName'
+        });
+        loadComboBox({
+            uri: '/program/json',
+            title: 'Select Program',
+            el: '#form-program-id',
+            keyname: 'id',
+            valuename: 'name'
+        });
+
+        $('#form-dialog').on('change', '.program', function() {
+            id = $(this).val();
+            $el = $('#form-semester-id');
+            $el.find("option").remove();
+            $el.append('<option value="">' + 'Select Semester' + "</option>");
+            $.getJSON('/program/semester/details/' + id, function(data) {
+                temp = 0;
+                $.each(data, function(i, elem) {
+                    if (temp != elem.semester.id) {
+                        var $option = $("<option/>");
+                        $option
+                            .val(elem.semester['id'])
+                            .text(elem.semester['name'])
+                            .appendTo($el);
+                    }
+                    temp = elem.semester.id;
+                });
+            });
+
+        });
+
+
+        $(".birthDate").datepicker({
+            format: "yyyy-mm-dd",
+            todayHighlight: true,
+            autoClose: true
+        });
+
+        $(".birthDate").on("changeDate", function() {
+            $(this).datepicker("hide");
+        });
+
+    });
+</script>

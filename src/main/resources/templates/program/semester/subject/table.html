@@ -1,0 +1,36 @@
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr th:each="record:${records}">
+            <td th:text="${record.id}"></td>
+            <td th:text="${record.program.name}"></td>
+            <td th:text="${record.semester.name}"></td>
+            <td>
+                <span th:each="record:${record.semester.subjects}">
+                    <div th:text="${record.name}"></div>
+                </span>
+            </td>
+            <td>
+                <a href="javascript:void(0)" th:rel="${record.id}" class="btn btn-success btn-xs edit-btn">
+                    <span class="glyphicon glyphicon-pencil"></span>
+                </a>
+                <a href="javascript:void(0)" th:rel="${record.id}" class="btn btn-danger btn-xs delete-btn">
+                    <span class="glyphicon glyphicon-trash"></span>
+                </a>
+            </td>
+        </tr>
+    </tbody>
+
+</table>
+
+<script>
+    $(function() {
+        createDataTable('.table');
+    });
+</script>

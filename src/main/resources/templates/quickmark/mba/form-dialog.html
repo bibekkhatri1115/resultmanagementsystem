@@ -1,0 +1,24 @@
+<div id="excelModal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class=" modal-header">
+                <button type="button" class="close " data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true ">&times;</span></button>
+                <h4 class="modal-title "></h4>
+            </div>
+            <form th:action="${ '/'+pageURI+ '/upload'} " method="post" id="dialog-form" enctype="multipart/form-data">
+                <div class="modal-body ">
+                    <div class="form-group ">
+                        <label class="control-label " for="uploadfile ">Upload Excel File:</label>
+                        <input type="file" name="files" class="form-group" id="uploadfile" placeholder="Upload File"></input>
+                    </div>
+                </div>
+                <div class=" modal-footer ">
+                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                    <button type="submit" class="btn btn-success">Save</button>
+                    <button type=" button " class=" btn btn-default " data-dismiss=" modal ">Close</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

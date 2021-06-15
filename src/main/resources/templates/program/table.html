@@ -1,0 +1,68 @@
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr th:each="record:${records}">
+            <td th:text="${record.id}"></td>
+            <td th:text="${record.name}"></td>
+            <td>
+                <a href="javascript:void(0)" th:rel="${record.id}" class="btn btn-success btn-xs edit-btn">
+                    <span class="glyphicon glyphicon-pencil"></span>
+                </a>
+                <a href="javascript:void(0)" th:rel="${record.id}" class="btn btn-danger btn-xs delete-btn">
+                    <span class="glyphicon glyphicon-trash"></span>
+                </a>
+            </td>
+        </tr>
+    </tbody>
+
+</table>
+<section class="sidebar">
+    <ul class="sidebar-menu">
+        <li th:class="treeview">
+            <a href="#">
+                <i class="fa fa-th"></i> <span>Master</span>
+                <span class="pull-right-container">
+                    <i class="fa fa-angle-left pull-right"></i>
+                </span>
+            </a>
+            <ul class="treeview-menu semester">
+
+            </ul>
+        </li>
+        <div th:each="record:${records}">
+            <li class="treeview">
+                <a href="#">
+                    <span class="btn btn-block btn-primary" th:text="${record.name}"></span>
+                    <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
+                </a>
+                <span>
+                    <ul class="treeview-menu">
+                        <li><a href="/brands"><i class="fa fa-circle-o"></i> Brands</a></li>
+                        <!-- <li th:text="${relation.semester.name}"><i class="fa fa-circle-o"></i></li> -->
+                    </ul>
+                </span>
+                <ul class="treeview-menu">
+                    <li><a href="/brands"><i class="fa fa-circle-o"></i> Brands</a></li>
+                    <li><a href="/categories"><i class="fa fa-circle-o"></i> Categories</a></li>
+                    <li><a href="/items"><i class="fa fa-circle-o"></i> Items</a></li>
+                    <li><a href="/units"><i class="fa fa-circle-o"></i> Units</a></li>
+                </ul>
+            </li>
+        </div>
+    </ul>
+</section>
+<script>
+    $(function() {
+        createDataTable('.table');
+
+        $.getJSON('/program/json', function(data) {
+            console.log(data);
+        });
+    });
+</script>

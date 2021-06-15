@@ -1,0 +1,21 @@
+.title{
+    text-align: center;
+   color:maroon;
+}
+.nav{
+    width:1500px;
+    height:60px;
+    background-color: maroon;
+    color:white;
+    
+    margin-left: 100px;
+    margin-top: 20px;
+    font-family:2px bold;
+}
+
+.nav ul{
+    float:left;
+    margin-top: 20px;
+    font-size: 20px;
+    
+}
